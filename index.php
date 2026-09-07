@@ -602,4 +602,106 @@ while ($zadanie = mysqli_fetch_assoc($wynik)) {
 
 /*
  10. zamkniecie połaczenia
+
+ mysqli_close() zamyka wcześniej utworzone
+ połaczenie z bazą danych
+
+ do funkcji przekazujemy zmienna $polaczenie
+ ponieważ właśnie to połączenie chcemy zamknąć
 */
+
+mysqli_close($polaczenie);
+
+?>
+
+</body>
+
+</html>
+
+<!--
+    Dodatkowe informacje:
+    Podstawoewe znaki i zapisy w PHP
+    ================
+
+    $
+    to poacżatek nazwy zmiennej w PHP
+    Przykład
+    $imie = "Adam";
+
+    =
+    operator przypisania 
+    przypisuje wartość znajdującą się po prawej stronie do zmiennej po lewej stronie
+    Przykład:
+    $wiek = 10;
+
+    ==
+    Operator porównania
+    SPrawdza czy dwie wartości są równe
+    Przykład
+    $wiek == 10
+
+    !
+    Oznacza negację, czyli "NIE"
+    Przykład:
+    !$polaczenie
+    Możemy to przeczytac jako "nie ma połaczenia"
+
+    ;
+    Średnik oznacza koniec instrukcji PHP
+    Przykład
+    $imie = "ADAM";
+
+    ( )
+    Nawiasy okrągłe
+    są używane między innymi przy funkcjach i warunkach 
+    Przykład funkcji"
+    mysqli_connect(...)
+
+    Przykład warunku:
+    if ($wiek == 10) {
+    ....
+    }
+    
+    { }
+    Nawiasy klamrowe 
+    Oznaczają początek i koniec bloku instrukcji
+    Przykład:
+    if ($wiek == 10) {
+        echo "Masz 10 lat"
+    }
+
+    [ ]
+    Nawiasy kwadratowe 
+    Pozwalają dostać się do konkretnego elementu tablicy lub innej struktury danych
+    Pzykład:
+    $_POST["tresc"]
+
+    Oznacza:
+    pobierz element o nazwie "tresc" z danych przesłanych metodą POST.
+
+    " "
+    cudzysłów oznaczją tekst
+    Przykład:
+    $imie = "Adam"
+
+    ' '
+    Apostrofy również mogą oznaczać tekst
+    Przykład:
+    $imie = 'Adam'
+
+    .
+    Kropka w PHP służy do łaczenia tekstów
+    Przykład:
+    $imie = "Adam";
+    echo "witaj . "$imie"
+
+    Wynik
+    Wiaj Adam
+
+    ,
+    Przecinek służy między innymi do oddzielenia argumentów przekazywanych do funkcji
+    Przykład:
+    mysqli_connect($host, $uzytkownik, $haslo, $baza);
+    
+
+-->
