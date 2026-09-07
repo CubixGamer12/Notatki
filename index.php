@@ -542,5 +542,64 @@ $wynik = mysqli_query($polaczenie, $sql);
 
 while ($zadanie = mysqli_fetch_assoc($wynik)) {
 
+    /*
+    | echo jest poleceniem PHP
+    | które wyświetla coś na stronie
+    |
+    | ("tresc") oznacza:
+    | pobierz wartośc kolumny "tresc"
+    | z aktualnego rekordu
+    */
+
+    echo $zadanie("tresc");
+
+    /*
+        teraz tworzymy link "Usun"
+        <a href="..."> jest znacznikiem HTML tworzącym odnośnik
+
+        Problem polega na tym ze czesc adresu
+        jest zwykłym tekstem
+        a cześć pochodzi ze zmiennej PHP
+
+        Operator:
+
+        . = oznacza w PHP łacznie tekstów
+
+        Przykład:
+
+        "JAN" . " Kowalski"
+
+        da:
+
+        JAN Kowalski
+
+        dlatego poniżej łaczymy:
+
+        "index.php?usun="
+
+        z:
+
+        $zadanie("id")
+
+        Jeżeli id wynosi 3 powstaje
+
+        index.php?usun=3
+    */
+
+    echo " <a href='index.php?usun=" . $zadanie("id") . "'Usuń</a>";
+
+    /*
+        <br> jest znacznikiem HTML
+        oznaczającym przejście do nowej linii
+
+        PHP za pomocą echo może również
+        wysyłać do przeglądarki kod HTML
+    */
+
+    echo "<br>";
 
 }
+
+/*
+ 10. zamkniecie połaczenia
+*/
