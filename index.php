@@ -165,7 +165,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $tresc = $_POST['tresc'];
 
-
     /*
     |--------------------------------------------------------------------------
     | Tworzenie polecenia SQL
@@ -179,9 +178,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     |
     | "zadania" to nazwa naszej tabeli.
     |
-    | "(tresc)"
-    |
-    | określa kolumnę, do której chcemy coś wpisać.
+    | "(tresc)" określa kolumnę, do której chcemy coś wpisać.
     |
     | VALUES oznacza wartości, które chcemy zapisać.
     |
@@ -198,29 +195,82 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     |
     | Funkcja otrzymuje dwie informacje:
     |
-    | 1. $polaczenie = Połączenie z bazą danych,
-    | 2. $sql        = Polecenie SQL, które ma zostać wykonane.
+    | 1. $polaczenie — połączenie z bazą danych,
+    | 2. $sql        — polecenie SQL, które ma zostać wykonane.
     |
     */
 
-    mysqli_query($polaczenie, $sql);
+    $wynik = mysqli_query($polaczenie, $sql);
+
 }
+
 
 /*
 |--------------------------------------------------------------------------
-| 5. Ususanie Znacznika
+| 5. Usuwanie zadania
 |--------------------------------------------------------------------------
 |
-| Zadanie będziemy usuwać za pomocą adresu
+| Zadanie będziemy usuwać za pomocą adresu:
 |
 | index.php?usun=3
 |
-| Znak: ? w adresie rozpoczyna PARAMETRY adresu
+| Znak "?" w adresie rozpoczyna parametry adresu.
 |
-| usun=3 oznacza parametr "usun" ma wartość 3
+| "usun=3" oznacza, że parametr "usun" ma wartość 3.
 |
 | PHP może odczytać parametry z adresu za pomocą specjalnej zmiennej:
 |
 | $_GET
 |
+| Czyli:
+|
+| isset($_GET['usun'])
+|
+| oznacza:
+| "czy w adresie istnieje parametr usun?".
+|
 */
+
+
+if (isset($_GET['usun'])) {
+
+    /*
+    | Pobieramy numer rekordu z adresu.
+    |
+    | Jeżeli adres wygląda tak:
+    |
+    | index.php?usun=3
+    |
+    | to do zmiennej $id trafi liczba 3.
+    */
+
+
+    $id = (int) $_GET['usun'];
+
+
+    /*
+    | DELETE oznacza usuwanie rekordu.
+    |
+    | FROM zadania oznacza:
+    | "z tabeli zadania".
+    |
+    | WHERE oznacza warunek.
+    |
+    | id=$id określa, który rekord ma zostać usunięty.
+    |
+    | Jeżeli $id wynosi 3, MySQL otrzyma:
+    |
+    | DELETE FROM zadania WHERE id=3
+    */
+
+
+    $sql = "DELETE FROM zadania WHERE id=$id";
+
+
+    /*
+    | Wysyłamy przygotowane polecenie MySQL.
+    */
+
+    $wynik = mysqli_query($polaczenie, $sql);
+
+}
