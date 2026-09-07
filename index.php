@@ -111,12 +111,13 @@ if (!$polaczenie) {
 | Dzięki temu polskie znaki, takie jak ą, ć, ę, ł, ń, ó, ś, ź oraz ż,
 | będą poprawnie zapisywane i wyświetlane.
 */
+
 mysqli_set_charset($polaczenie, 'utf8mb4');
 
 
 /*
 |--------------------------------------------------------------------------
-| 5. Sprawdzenie metody wysłania formularza
+| 4. Sprawdzenie metody wysłania formularza
 |--------------------------------------------------------------------------
 |
 | Zmienna $_SERVER zawiera informacje dotyczące bieżącego żądania.
@@ -137,34 +138,89 @@ mysqli_set_charset($polaczenie, 'utf8mb4');
 | $liczba == 5;      // porównanie wartości
 |
 | Cały poniższy warunek oznacza:
-| "JEŻELI strona została wysłana metodą POST wykonaj instrukcje znajdujace się w { }"
+| "JEŻELI strona została wysłana metodą POST, wykonaj instrukcje
+| znajdujące się w { }".
 |
 */
 
-if ($_SERVER("REQUEST_METHOD") == "POST") {
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     /*
-    | $_POST zawiera dane przesłane przez formularz
+    | $_POST zawiera dane przesłane przez formularz.
     |
-    | ("tresc") oznaca:
-    | pobierz pole formlarza o nazwie "tresc"
+    | ['tresc'] oznacza:
+    | pobierz pole formularza o nazwie "tresc".
     |
     | Za chwilę w HTML utworzymy:
     |
     | <input type="text" name="tresc">
     |
-    | Właśie name="tresc" powoduje że PHP może póżniej odczytać
+    | Właśnie name="tresc" powoduje, że PHP może później odczytać:
     |
-    | $_POST("tresc")
+    | $_POST['tresc']
     |
     */
 
-    $tresc = $_POST("tresc");
+
+    $tresc = $_POST['tresc'];
+
 
     /*
+    |--------------------------------------------------------------------------
+    | Tworzenie polecenia SQL
+    |--------------------------------------------------------------------------
     |
+    | Polecenie SQL:
     |
+    | INSERT INTO
+    |
+    | oznacza: "dodaj nowy rekord do tabeli".
+    |
+    | "zadania" to nazwa naszej tabeli.
+    |
+    | "(tresc)"
+    |
+    | określa kolumnę, do której chcemy coś wpisać.
+    |
+    | VALUES oznacza wartości, które chcemy zapisać.
+    |
+    | $tresc jest zmienną PHP zawierającą tekst wpisany przez użytkownika.
     |
     */
 
+
+    $sql = "INSERT INTO zadania (tresc) VALUES ('$tresc')";
+
+
+    /*
+    | mysqli_query() wysyła polecenie SQL do serwera MySQL.
+    |
+    | Funkcja otrzymuje dwie informacje:
+    |
+    | 1. $polaczenie = Połączenie z bazą danych,
+    | 2. $sql        = Polecenie SQL, które ma zostać wykonane.
+    |
+    */
+
+    mysqli_query($polaczenie, $sql);
 }
+
+/*
+|--------------------------------------------------------------------------
+| 5. Ususanie Znacznika
+|--------------------------------------------------------------------------
+|
+| Zadanie będziemy usuwać za pomocą adresu
+|
+| index.php?usun=3
+|
+| Znak: ? w adresie rozpoczyna PARAMETRY adresu
+|
+| usun=3 oznacza parametr "usun" ma wartość 3
+|
+| PHP może odczytać parametry z adresu za pomocą specjalnej zmiennej:
+|
+| $_GET
+|
+*/
