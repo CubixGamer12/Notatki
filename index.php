@@ -512,4 +512,35 @@ $wynik = mysqli_query($polaczenie, $sql);
 | W naszym przypadku pętla będzie służyła do przechodzenia
 | przez wszystkie zadania pobrane z bazy danych.
 |
+| mysqlo_fetch_assoc($wynik)
+|
+| pobiera JEDEN kolejny rekord z wyników naszego SELECT
+|
+| Jeżeli tabela zawiera
+|
+| id  |  tresc
+|  1  | Nauczyć się PHP
+|  2  | Zrobić zadanie
+|  3  | Kupić kabel
+|      
+| pętla wykona się trzy razy
+| za każdym razem zmienna $zadanie
+| będzie zawierało jeden rekord.
+|
+| Pierwszy obrót:
+| 
+| $zadanie("id")     -> 1
+| $zadanie("tresc")  -> Nauczyć się PHP
+|
+| Drugi obrót:
+| 
+| $zadanie("id")     -> 2
+| $zadanie("tresc")  -> Zrobić zadanie
+|
+| itd.
 */
+
+while ($zadanie = mysqli_fetch_assoc($wynik)) {
+
+
+}
