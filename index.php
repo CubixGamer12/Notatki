@@ -302,3 +302,76 @@ $sql = "SELECT * FROM zadania";
 */
 
 $wynik = mysqli_query($polaczenie, $sql);
+
+/*
+|--------------------------------------------------------------------------
+| Koniec Pierwszego fragmentu PHP
+|--------------------------------------------------------------------------
+|
+| Znacznik:
+|
+| ?>
+|
+| oznacza: "w tym miejscu kończy się kod PHP"
+| Od nastepcnej linijki będziemy pisać w zwykłym HTML
+*/
+
+?>
+
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Moja lista zadań</title>
+
+</head>
+
+<body>
+
+    <h1>Moja lista zadań</h1>
+
+    <!--
+    |--------------------------------------------------------------------------
+    | 7. Formularz HTMl
+    |--------------------------------------------------------------------------
+    |
+    | To nie jest PHP
+    | Jesteśmy teraz w zwykłym HTML
+    | <form> oznacza formularz,
+    | method="POST"
+    | określa sposób przesłana danych do PHP
+    | Po kliknięciu przycisku "Dodaj"
+    | przeglądarka wyśle dane metodą POST
+    -->
+
+    <form method="POST">
+
+    <!--
+    |
+    | <label> jest opisem pola formularza
+    |
+    -->
+
+    <label>Wpisz nowe zadanie</label>
+
+    <!--
+    | <input> tworzy pole tekstowe
+    |
+    | type="text"
+    |
+    | oznacza zwykle pole do wpisania tekstu
+    |
+    | name="tresc"
+    |
+    | jest BARDZO WAŻNE, to nazwa pod którą przesłana wartość będzie dostępna w PHP
+    | dlatego PHP może użyć:
+    |
+    | $_POST("tresc")
+    |
+    | Nazwa "tresc" mysu sue zgadzać
+    -->
+
+    <input type="text" name="tresc">
