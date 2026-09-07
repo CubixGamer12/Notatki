@@ -8,10 +8,13 @@
 | Ten plik pokazuje, jak:
 | 1. Połączyć PHP z bazą danych MySQL,
 | 2. Sprawdzić poprawność połączenia,
-| 3. Obsługiwać dane przesyłane przez formularz.
+| 3. Obsługiwać dane przesyłane przez formularz,
+| 4. Dodawać nowe zadania do bazy danych,
+| 5. Usuwać zadania,
+| 6. Pobierać i wyświetlać zadania.
 |
-| Kod PHP jest wykonywany na serwerze. Przeglądarka otrzymuje dopiero
-| gotowy wynik działania programu.
+| Kod PHP jest wykonywany na serwerze.
+| Przeglądarka otrzymuje dopiero gotowy wynik działania programu.
 |
 */
 
@@ -58,11 +61,14 @@ $baza = 'nauka_php';
 | 2. Połączenie z bazą danych
 |--------------------------------------------------------------------------
 |
-| Funkcja mysqli_connect() przyjmuje cztery wartości:
+| Funkcja mysqli_connect() służy do nawiązania połączenia
+| pomiędzy PHP a bazą danych MySQL.
+|
+| Funkcja otrzymuje cztery informacje:
 |
 | 1. Adres serwera,
 | 2. Nazwę użytkownika,
-| 3. Hasło,
+| 3. Hasło użytkownika,
 | 4. Nazwę bazy danych.
 |
 | Wynik działania funkcji zapisujemy w zmiennej $polaczenie.
@@ -83,15 +89,15 @@ $polaczenie = mysqli_connect(
 | 3. Sprawdzenie połączenia
 |--------------------------------------------------------------------------
 |
-| Instrukcja if oznacza: "jeżeli".
+| Instrukcja if oznacza "jeżeli".
 |
-| Zapis:
+| Przykładowa konstrukcja:
 |
 | if (warunek) {
 |     instrukcje;
 | }
 |
-| oznacza, że instrukcje znajdujące się wewnątrz klamr zostaną wykonane,
+| Instrukcje znajdujące się wewnątrz klamr zostaną wykonane,
 | jeśli określony warunek będzie prawdziwy.
 |
 | Znak "!" oznacza zaprzeczenie, czyli "nie".
@@ -108,8 +114,14 @@ if (!$polaczenie) {
 
 
 /*
-| Dzięki temu polskie znaki, takie jak ą, ć, ę, ł, ń, ó, ś, ź oraz ż,
-| będą poprawnie zapisywane i wyświetlane.
+|--------------------------------------------------------------------------
+| Ustawienie kodowania znaków
+|--------------------------------------------------------------------------
+|
+| Dzięki ustawieniu kodowania UTF-8 polskie znaki, takie jak:
+| ą, ć, ę, ł, ń, ó, ś, ź oraz ż,
+| będą poprawnie zapisywane w bazie danych i wyświetlane na stronie.
+|
 */
 
 mysqli_set_charset($polaczenie, 'utf8mb4');
@@ -122,8 +134,8 @@ mysqli_set_charset($polaczenie, 'utf8mb4');
 |
 | Zmienna $_SERVER zawiera informacje dotyczące bieżącego żądania.
 |
-| $_SERVER['REQUEST_METHOD'] przechowuje metodę, za pomocą której
-| została otwarta lub wysłana strona.
+| $_SERVER['REQUEST_METHOD'] przechowuje metodę,
+| za pomocą której strona została otwarta lub wysłana.
 |
 | Formularze wysyłające dane zazwyczaj korzystają z metody POST.
 |
@@ -137,9 +149,9 @@ mysqli_set_charset($polaczenie, 'utf8mb4');
 | $liczba = 5;       // przypisanie wartości
 | $liczba == 5;      // porównanie wartości
 |
-| Cały poniższy warunek oznacza:
-| "JEŻELI strona została wysłana metodą POST, wykonaj instrukcje
-| znajdujące się w { }".
+| Poniższy warunek oznacza:
+| "Jeżeli strona została wysłana metodą POST,
+| wykonaj instrukcje znajdujące się w klamrach".
 |
 */
 
@@ -147,16 +159,24 @@ mysqli_set_charset($polaczenie, 'utf8mb4');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     /*
-    | $_POST zawiera dane przesłane przez formularz.
+    |--------------------------------------------------------------------------
+    | Pobranie danych z formularza
+    |--------------------------------------------------------------------------
+    |
+    | $_POST to specjalna zmienna zawierająca dane przesłane
+    | przez formularz metodą POST.
     |
     | ['tresc'] oznacza:
-    | pobierz pole formularza o nazwie "tresc".
+    | "pobierz wartość pola formularza o nazwie tresc".
     |
-    | Za chwilę w HTML utworzymy:
+    | W formularzu znajduje się pole:
     |
     | <input type="text" name="tresc">
     |
-    | Właśnie name="tresc" powoduje, że PHP może później odczytać:
+    | Atrybut name="tresc" określa nazwę,
+    | pod którą wartość pola będzie dostępna w PHP.
+    |
+    | Dzięki temu możemy odczytać ją za pomocą:
     |
     | $_POST['tresc']
     |
@@ -165,24 +185,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $tresc = $_POST['tresc'];
 
+
     /*
     |--------------------------------------------------------------------------
     | Tworzenie polecenia SQL
     |--------------------------------------------------------------------------
     |
-    | Polecenie SQL:
+    | Polecenie SQL INSERT INTO służy do dodawania nowych rekordów
+    | do tabeli w bazie danych.
     |
-    | INSERT INTO
+    | INSERT INTO zadania
     |
-    | oznacza: "dodaj nowy rekord do tabeli".
+    | oznacza dodanie nowego rekordu do tabeli "zadania".
     |
-    | "zadania" to nazwa naszej tabeli.
+    | (tresc)
     |
-    | "(tresc)" określa kolumnę, do której chcemy coś wpisać.
+    | określa nazwę kolumny, do której chcemy wpisać dane.
     |
-    | VALUES oznacza wartości, które chcemy zapisać.
+    | VALUES
     |
-    | $tresc jest zmienną PHP zawierającą tekst wpisany przez użytkownika.
+    | określa wartości, które mają zostać zapisane w tabeli.
+    |
+    | Zmienna $tresc zawiera tekst wpisany przez użytkownika
+    | w formularzu.
     |
     */
 
@@ -191,17 +216,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     /*
-    | mysqli_query() wysyła polecenie SQL do serwera MySQL.
+    |--------------------------------------------------------------------------
+    | Wykonanie zapytania SQL
+    |--------------------------------------------------------------------------
     |
-    | Funkcja otrzymuje dwie informacje:
+    | Funkcja mysqli_query() wysyła zapytanie SQL do serwera MySQL.
+    |
+    | Funkcja otrzymuje dwa argumenty:
     |
     | 1. $polaczenie — połączenie z bazą danych,
-    | 2. $sql        — polecenie SQL, które ma zostać wykonane.
+    | 2. $sql        — zapytanie SQL, które ma zostać wykonane.
+    |
+    | Wynik wykonania zapytania zapisujemy w zmiennej $wynik.
     |
     */
 
-    $wynik = mysqli_query($polaczenie, $sql);
 
+    $wynik = mysqli_query($polaczenie, $sql);
 }
 
 
@@ -210,24 +241,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 | 5. Usuwanie zadania
 |--------------------------------------------------------------------------
 |
-| Zadanie będziemy usuwać za pomocą adresu:
+| Zadanie będziemy usuwać za pomocą parametru przekazanego
+| w adresie strony.
+|
+| Przykład:
 |
 | index.php?usun=3
 |
-| Znak "?" w adresie rozpoczyna parametry adresu.
+| Znak "?" rozpoczyna listę parametrów adresu.
 |
-| "usun=3" oznacza, że parametr "usun" ma wartość 3.
+| "usun=3" oznacza, że:
 |
-| PHP może odczytać parametry z adresu za pomocą specjalnej zmiennej:
+| - nazwa parametru to "usun",
+| - wartość parametru to "3".
 |
-| $_GET
+| Parametry znajdujące się w adresie są dostępne w PHP
+| za pomocą specjalnej tablicy $_GET.
 |
-| Czyli:
+| Funkcja isset() sprawdza, czy określony parametr istnieje.
+|
+| Przykład:
 |
 | isset($_GET['usun'])
 |
 | oznacza:
-| "czy w adresie istnieje parametr usun?".
+| "sprawdź, czy w adresie istnieje parametr o nazwie usun".
 |
 */
 
@@ -235,13 +273,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 if (isset($_GET['usun'])) {
 
     /*
-    | Pobieramy numer rekordu z adresu.
+    |--------------------------------------------------------------------------
+    | Pobranie identyfikatora zadania
+    |--------------------------------------------------------------------------
+    |
+    | Pobieramy identyfikator zadania z adresu strony.
     |
     | Jeżeli adres wygląda tak:
     |
     | index.php?usun=3
     |
-    | to do zmiennej $id trafi liczba 3.
+    | to wartość parametru "usun" wynosi 3.
+    | Ta wartość zostanie zapisana w zmiennej $id.
+    |
     */
 
 
@@ -249,18 +293,27 @@ if (isset($_GET['usun'])) {
 
 
     /*
-    | DELETE oznacza usuwanie rekordu.
+    |--------------------------------------------------------------------------
+    | Tworzenie polecenia usuwającego rekord
+    |--------------------------------------------------------------------------
     |
-    | FROM zadania oznacza:
-    | "z tabeli zadania".
+    | Polecenie DELETE służy do usuwania rekordów z tabeli.
     |
-    | WHERE oznacza warunek.
+    | DELETE FROM zadania
     |
-    | id=$id określa, który rekord ma zostać usunięty.
+    | oznacza usunięcie rekordu z tabeli "zadania".
     |
-    | Jeżeli $id wynosi 3, MySQL otrzyma:
+    | WHERE określa warunek, który musi zostać spełniony.
     |
-    | DELETE FROM zadania WHERE id=3
+    | id = $id
+    |
+    | oznacza, że zostanie usunięty rekord
+    | o identyfikatorze zapisanym w zmiennej $id.
+    |
+    | Jeżeli $id wynosi 3, MySQL otrzyma zapytanie:
+    |
+    | DELETE FROM zadania WHERE id = 3
+    |
     */
 
 
@@ -268,52 +321,76 @@ if (isset($_GET['usun'])) {
 
 
     /*
-    | Wysyłamy przygotowane polecenie MySQL.
+    |--------------------------------------------------------------------------
+    | Wykonanie polecenia usuwającego
+    |--------------------------------------------------------------------------
+    |
+    | Wysyłamy przygotowane polecenie SQL do serwera MySQL.
+    |
     */
 
-    $wynik = mysqli_query($polaczenie, $sql);
 
+    $wynik = mysqli_query($polaczenie, $sql);
 }
+
 
 /*
 |--------------------------------------------------------------------------
 | 6. Pobranie wszystkich zadań
 |--------------------------------------------------------------------------
 |
-| SELECT oznacza:
-| "pobierz dane",
+| Polecenie SELECT służy do pobierania danych z tabeli.
 |
-| Znak: *
-| Oznacza "wszystkie kolumny"
+| Znak "*" oznacza wszystkie kolumny.
 |
-| FROM oznacza: "z tabeli",
-| Czyli:
+| FROM oznacza, z której tabeli mają zostać pobrane dane.
+|
+| Zapytanie:
+|
 | SELECT * FROM zadania
 |
-| czytamy: "pobierz wszystkie kolumny ze wszystkich rekordów tabeli zadania"
+| oznacza:
+| "pobierz wszystkie kolumny ze wszystkich rekordów
+| znajdujących się w tabeli zadania".
+|
 */
+
 
 $sql = "SELECT * FROM zadania";
 
-/*
-| Wysyłamy zapytanie do MySQL
-| Tym razem wynik jest name potrzebny
-| dlatego zapisujemy go w zmiennej $wynik
-*/
-
-$wynik = mysqli_query($polaczenie, $sql);
 
 /*
 |--------------------------------------------------------------------------
-| Koniec Pierwszego fragmentu PHP
+| Wykonanie zapytania pobierającego dane
+|--------------------------------------------------------------------------
+|
+| Wysyłamy zapytanie do serwera MySQL.
+|
+| Tym razem wynik zapytania będzie nam potrzebny,
+| ponieważ zawiera pobrane zadania.
+|
+| Dlatego zapisujemy go w zmiennej $wynik.
+|
+*/
+
+
+$wynik = mysqli_query($polaczenie, $sql);
+
+
+/*
+|--------------------------------------------------------------------------
+| Koniec pierwszego fragmentu PHP
 |--------------------------------------------------------------------------
 |
 | Znacznik:
 |
 | ?>
 |
-| oznacza: "w tym miejscu kończy się kod PHP"
-| Od nastepcnej linijki będziemy pisać w zwykłym HTML
+| oznacza zakończenie tego fragmentu kodu PHP.
+|
+| Od następnej linii będziemy pisać kod HTML,
+| który odpowiada za strukturę strony.
+|
 */
 
 ?>
@@ -335,47 +412,104 @@ $wynik = mysqli_query($polaczenie, $sql);
 
     <!--
     |--------------------------------------------------------------------------
-    | 7. Formularz HTMl
+    | 7. Formularz HTML
     |--------------------------------------------------------------------------
     |
-    | To nie jest PHP
-    | Jesteśmy teraz w zwykłym HTML
-    | <form> oznacza formularz,
-    | method="POST"
-    | określa sposób przesłana danych do PHP
-    | Po kliknięciu przycisku "Dodaj"
-    | przeglądarka wyśle dane metodą POST
+    | Od tego miejsca znajdujemy się w zwykłym kodzie HTML.
+    |
+    | Znacznik <form> tworzy formularz.
+    |
+    | Atrybut method="POST" określa sposób przesyłania danych
+    | do kodu PHP.
+    |
+    | Po kliknięciu przycisku "Dodaj" przeglądarka wyśle dane
+    | z formularza do serwera metodą POST.
+    |
     -->
 
     <form method="POST">
 
-    <!--
-    |
-    | <label> jest opisem pola formularza
-    |
-    -->
+        <!--
+        |
+        | Znacznik <label> tworzy opis pola formularza.
+        | Informuje użytkownika, jakie dane powinien wpisać.
+        |
+        -->
 
-    <label>Wpisz nowe zadanie</label>
+        <label>Wpisz nowe zadanie</label>
 
-    <!--
-    | <input> tworzy pole tekstowe
-    |
-    | type="text"
-    |
-    | oznacza zwykle pole do wpisania tekstu
-    |
-    | name="tresc"
-    |
-    | jest BARDZO WAŻNE, to nazwa pod którą przesłana wartość będzie dostępna w PHP
-    | dlatego PHP może użyć:
-    |
-    | $_POST("tresc")
-    |
-    | Nazwa "tresc" mysu sue zgadzać
-    -->
 
-    <input type="text" name="tresc">
+        <!--
+        |--------------------------------------------------------------------------
+        | Pole tekstowe formularza
+        |--------------------------------------------------------------------------
+        |
+        | Znacznik <input> tworzy pole formularza.
+        |
+        | type="text" oznacza standardowe pole tekstowe,
+        | w którym użytkownik może wpisać tekst.
+        |
+        | name="tresc" określa nazwę tego pola.
+        |
+        | Atrybut name jest bardzo ważny, ponieważ dzięki niemu
+        | PHP może odczytać przesłaną wartość.
+        |
+        | W tym przypadku wartość będzie dostępna jako:
+        |
+        | $_POST['tresc']
+        |
+        | Nazwa "tresc" w formularzu musi być taka sama
+        | jak nazwa użyta później w kodzie PHP.
+        |
+        -->
 
-    <!--
-    
-    -->
+        <input type="text" name="tresc">
+
+
+        <!--
+        |--------------------------------------------------------------------------
+        | Przycisk wysyłający formularz
+        |--------------------------------------------------------------------------
+        |
+        | type="submit" oznacza przycisk wysyłający formularz.
+        |
+        | Po jego kliknięciu dane zostaną przesłane do PHP.
+        |
+        -->
+
+        <button type="submit">Dodaj</button>
+
+    </form>
+
+
+<?php
+
+/*
+|--------------------------------------------------------------------------
+| 8. Ponowne rozpoczęcie kodu PHP
+|--------------------------------------------------------------------------
+|
+| Znacznik <?php oznacza, że od tego miejsca ponownie
+| rozpoczyna się wykonywanie kodu PHP.
+|
+*/
+
+
+/*
+|--------------------------------------------------------------------------
+| 9. Pętla while
+|--------------------------------------------------------------------------
+|
+| Pętla while wykonuje instrukcje tak długo,
+| jak długo określony warunek jest prawdziwy.
+|
+| Przykład:
+|
+| while (warunek) {
+|     instrukcje;
+| }
+|
+| W naszym przypadku pętla będzie służyła do przechodzenia
+| przez wszystkie zadania pobrane z bazy danych.
+|
+*/
