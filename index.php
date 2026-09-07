@@ -126,3 +126,39 @@ if (!$polaczenie) {
 
     die("Nie udało połaczyć się z bazą danych");
 }
+
+// =================================================
+// 4. Sprawdzenie, czy użytkownik wysyła formularze
+// =================================================
+//
+// $_SERVER jest specjalną zmienna PHP,
+//
+// znaki:
+//
+// { }
+//
+// pozwalają pobrać konkretną informacje znajdujaca sie wewnatrz zmiennej
+//
+// $_SERVER{"REQUEST_METHOD"}
+//
+// mówi nam jaką metodą została otwarta/wysłana stona.
+//
+// formularz ktory stworzymy niżej bedzie używał metody POST
+//
+// Operator:
+//
+// ==
+//
+// oznacza PORÓWNANIE
+//
+// UWAGA:
+//
+// =   przypisuje wartość
+// ==  porównuje dwie wartości
+//
+// Czyli
+//
+// $x = 5;
+//
+//
+ 
