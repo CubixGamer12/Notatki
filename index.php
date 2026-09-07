@@ -1,163 +1,170 @@
 <?php
 
+/*
+|--------------------------------------------------------------------------
+| PROSTA LISTA ZADAŃ — PHP + MySQL
+|--------------------------------------------------------------------------
+|
+| Ten plik pokazuje, jak:
+| 1. Połączyć PHP z bazą danych MySQL,
+| 2. Sprawdzić poprawność połączenia,
+| 3. Obsługiwać dane przesyłane przez formularz.
+|
+| Kod PHP jest wykonywany na serwerze. Przeglądarka otrzymuje dopiero
+| gotowy wynik działania programu.
+|
+*/
 
-// =========================================
-// PROSTA LISTA ZADAN PHP + MYSQL
-// =========================================
-// Znacznik <?php oznacza ze od tego miejsca zaczyna sie kod jezyka PHP 
-// Kod PHP jest wykonywany na serwerze, przegladarka nie wykonuje tego kodu bezposrednio, PHP wykonuje polecenia a do przegladarki wysyla gotowy wynik
-//
-// W tym programie bedziemy:
-// 1, laczyc sie baza danych
-// 2. dodawaca zadania
-// 3. pobierac zadania z bazy
-// 4. wyswietlac je
-// 5. usuwac wybrane zadania 
-//
-// ========================================
+
+/*
+|--------------------------------------------------------------------------
+| 1. Dane potrzebne do połączenia z bazą danych
+|--------------------------------------------------------------------------
+|
+| Znak "$" oznacza zmienną.
+|
+| Zmienna jest miejscem, w którym możemy przechowywać określoną wartość.
+|
+| Przykład:
+|
+| $imie = "Adam";
+|
+| "$imie" — nazwa zmiennej,
+| "="     — operator przypisania,
+| "Adam"  — wartość przypisana do zmiennej,
+| ";"     — znak kończący instrukcję.
+|
+*/
 
 
-// =========================================
-// 1. Zmienne i Dane potrzebne do polaczenia
-// =========================================
-//
-// Znak $ oznacza w PHP zmienna 
-//
-// Zmienna to miejsce w ktorym mozemy przechowywac jakas wartosc
-//
-// Przyklad:
-// $imie = "Adam";
-//
-// $imie     - nazwa zmiennej
-// =         - operator przypisania
-// "Adam"    - wartosc ktora zapisyjemy w zmiennej
-// ;         - srednik konczy instrukcje PHP
-//
-// czytamy to "do zmiennej imie przypisz tekst adam"
-//
-// Tekst zapisujemy pomiedzy cudzyslowami 
+// Adres serwera MySQL.
+// "localhost" oznacza, że baza danych znajduje się na tym samym komputerze.
+$host = 'localhost';
 
-$host = "localhost";
+// Nazwa użytkownika bazy danych.
+// W standardowej instalacji XAMPP jest to zazwyczaj "root".
+$uzytkownik = 'root';
 
-// localhost oznacza;
-// 'ten komputer'
-//
-// Nasz serwer WWW i serwer MySQL działają
-// na tym samym serwerze  
+// Hasło użytkownika bazy danych.
+// W domyślnej instalacji XAMPP hasło może być puste.
+$haslo = '';
 
-$uzytkownik = "root";
+// Nazwa bazy danych utworzonej wcześniej w phpMyAdmin.
+$baza = 'nauka_php';
 
-// Nazwa użytkownika bazy danych
-// W typowej instalacji XAMPP użytkownik nazywa się root
 
-$haslo = "";
+/*
+|--------------------------------------------------------------------------
+| 2. Połączenie z bazą danych
+|--------------------------------------------------------------------------
+|
+| Funkcja mysqli_connect() przyjmuje cztery wartości:
+|
+| 1. Adres serwera,
+| 2. Nazwę użytkownika,
+| 3. Hasło,
+| 4. Nazwę bazy danych.
+|
+| Wynik działania funkcji zapisujemy w zmiennej $polaczenie.
+|
+*/
 
-// Pusty "" oznacza pusty tekst czyli w tym przykładzie nie podajymy hasła
 
-$baza = "nauka_php";
+$polaczenie = mysqli_connect(
+    $host,
+    $uzytkownik,
+    $haslo,
+    $baza
+);
 
-// Jest to nazwa bazy danych którą wcześniej utworzyliśmy w phpMyAdmin
 
-// =========================================
-// 2. ŁACZENIE PHP Z BAZĄ MYSQL
-// =========================================
-//
-// mysqli_connect() jest gotową FUNKCJĄ języka PHP
-//
-// Funkcja wykonuje określone zadanie
-// 
-// Nawiasy ()   - służą tutaj do przekazania funkcji informacji któych potrzebuje
-//
-// Funkcji mysqli_connect przekazujemy cztery informacje:
-// 
-// 1. adres serwera
-// 2. użytkownik
-// 3. hasło
-// 4. nazwę bazy
-//
-// Poszczególne wartości odzielamy przecinkami,
-// Czyli:
-// mysqli_connect($host, $uzytkownik, $haslo, $baza)
-//
-// oznacza: "połacz sie z serwerem zapisanym w $host, używając użytkownika $uzytkownik oraz hasło $haslo i bazy $baza"
-//
-// Wynik działania funkcji zapisujemy w zmiennej $polazenie
-//
-// Znak = oznacza: "przypisz wynik po prawej stronie do zmiennej po lewej stronie"
+/*
+|--------------------------------------------------------------------------
+| 3. Sprawdzenie połączenia
+|--------------------------------------------------------------------------
+|
+| Instrukcja if oznacza: "jeżeli".
+|
+| Zapis:
+|
+| if (warunek) {
+|     instrukcje;
+| }
+|
+| oznacza, że instrukcje znajdujące się wewnątrz klamr zostaną wykonane,
+| jeśli określony warunek będzie prawdziwy.
+|
+| Znak "!" oznacza zaprzeczenie, czyli "nie".
+|
+| Warunek !$polaczenie oznacza:
+| "jeżeli połączenie nie istnieje".
+|
+*/
 
-$polaczenie = mysqli_connect($host, $uzytkownik, $haslo, $baza);
-
-// =========================================
-// 3. Sprawdzenie czy połaczenie się udało
-// =========================================
-//
-// if oznaza "Jeżeli"
-//
-// konstrukcja
-//
-// if (warunek) {
-//     instrukcje
-// }
-//
-// oznacza: Jeżeli warunek jest spełniony, wykonaj instrukcje znajdujace sie pomiedzy { },
-//
-// Nawiasy klamrowe:
-//
-// { }
-//
-// wyznaczaja początek i koniec grupy instrukcji,
-// 
-// Znak:
-//
-// !
-//
-// oznacza negacje czyli mozna go czyaj jako "NIE"
-//
-// !$polaczenie
-//
-// oznacza więc:
-//
-// "jeżeli nie ma połaczenia"
 
 if (!$polaczenie) {
-    
-    // die() kończy działanie programy
-    // Tekst znajdujacy sie pomiedzy "" zostanie wyświetlony użytkownikowi
-
-    die("Nie udało połaczyć się z bazą danych");
+    die('Nie udało się połączyć z bazą danych.');
 }
 
-// =================================================
-// 4. Sprawdzenie, czy użytkownik wysyła formularze
-// =================================================
-//
-// $_SERVER jest specjalną zmienna PHP,
-//
-// znaki:
-//
-// { }
-//
-// pozwalają pobrać konkretną informacje znajdujaca sie wewnatrz zmiennej
-//
-// $_SERVER{"REQUEST_METHOD"}
-//
-// mówi nam jaką metodą została otwarta/wysłana stona.
-//
-// formularz ktory stworzymy niżej bedzie używał metody POST
-//
-// Operator:
-//
-// ==
-//
-// oznacza PORÓWNANIE
-//
-// UWAGA:
-//
-// =   przypisuje wartość
-// ==  porównuje dwie wartości
-//
-// Czyli
-//
-// $x = 5;
-//
-// oznacza: "wstaw 5 do zmiennej x"
+
+/*
+| Dzięki temu polskie znaki, takie jak ą, ć, ę, ł, ń, ó, ś, ź oraz ż,
+| będą poprawnie zapisywane i wyświetlane.
+*/
+mysqli_set_charset($polaczenie, 'utf8mb4');
+
+
+/*
+|--------------------------------------------------------------------------
+| 5. Sprawdzenie metody wysłania formularza
+|--------------------------------------------------------------------------
+|
+| Zmienna $_SERVER zawiera informacje dotyczące bieżącego żądania.
+|
+| $_SERVER['REQUEST_METHOD'] przechowuje metodę, za pomocą której
+| została otwarta lub wysłana strona.
+|
+| Formularze wysyłające dane zazwyczaj korzystają z metody POST.
+|
+| Pamiętaj:
+|
+| "="  — przypisuje wartość,
+| "==" — porównuje dwie wartości.
+|
+| Przykład:
+|
+| $liczba = 5;       // przypisanie wartości
+| $liczba == 5;      // porównanie wartości
+|
+| Cały poniższy warunek oznacza:
+| "JEŻELI strona została wysłana metodą POST wykonaj instrukcje znajdujace się w { }"
+|
+*/
+
+if ($_SERVER("REQUEST_METHOD") == "POST") {
+
+    /*
+    | $_POST zawiera dane przesłane przez formularz
+    |
+    | ("tresc") oznaca:
+    | pobierz pole formlarza o nazwie "tresc"
+    |
+    | Za chwilę w HTML utworzymy:
+    |
+    | <input type="text" name="tresc">
+    |
+    | Właśie name="tresc" powoduje że PHP może póżniej odczytać
+    |
+    | $_POST("tresc")
+    |
+    */
+
+    $tresc = $_POST("tresc");
+
+    /*
+    |
+    |
+    |
+    */
+
+}
