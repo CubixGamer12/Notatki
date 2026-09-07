@@ -358,7 +358,6 @@ if (isset($_GET['usun'])) {
 
 $sql = "SELECT * FROM zadania";
 
-
 /*
 |--------------------------------------------------------------------------
 | Wykonanie zapytania pobierającego dane
@@ -372,7 +371,6 @@ $sql = "SELECT * FROM zadania";
 | Dlatego zapisujemy go w zmiennej $wynik.
 |
 */
-
 
 $wynik = mysqli_query($polaczenie, $sql);
 
@@ -399,11 +397,8 @@ $wynik = mysqli_query($polaczenie, $sql);
 <html lang="pl">
 
 <head>
-
     <meta charset="UTF-8">
-
     <title>Moja lista zadań</title>
-
 </head>
 
 <body>
@@ -422,7 +417,7 @@ $wynik = mysqli_query($polaczenie, $sql);
     | Atrybut method="POST" określa sposób przesyłania danych
     | do kodu PHP.
     |
-    | Po kliknięciu przycisku "Dodaj" przeglądarka wyśle dane
+    | Po kliknięciu przycisku „Dodaj” przeglądarka wyśle dane
     | z formularza do serwera metodą POST.
     |
     -->
@@ -430,14 +425,17 @@ $wynik = mysqli_query($polaczenie, $sql);
     <form method="POST">
 
         <!--
+        |--------------------------------------------------------------------------
+        | Etykieta pola formularza
+        |--------------------------------------------------------------------------
         |
         | Znacznik <label> tworzy opis pola formularza.
+        |
         | Informuje użytkownika, jakie dane powinien wpisać.
         |
         -->
 
-        <label>Wpisz nowe zadanie</label>
-
+        <label for="tresc">Wpisz nowe zadanie:</label>
 
         <!--
         |--------------------------------------------------------------------------
@@ -458,13 +456,12 @@ $wynik = mysqli_query($polaczenie, $sql);
         |
         | $_POST['tresc']
         |
-        | Nazwa "tresc" w formularzu musi być taka sama
+        | Nazwa „tresc” w formularzu musi być taka sama
         | jak nazwa użyta później w kodzie PHP.
         |
         -->
 
-        <input type="text" name="tresc">
-
+        <input type="text" id="tresc" name="tresc">
 
         <!--
         |--------------------------------------------------------------------------
@@ -512,102 +509,113 @@ $wynik = mysqli_query($polaczenie, $sql);
 | W naszym przypadku pętla będzie służyła do przechodzenia
 | przez wszystkie zadania pobrane z bazy danych.
 |
-| mysqlo_fetch_assoc($wynik)
+| Funkcja mysqli_fetch_assoc($wynik) pobiera jeden kolejny rekord
+| z wyników zapytania SELECT.
 |
-| pobiera JEDEN kolejny rekord z wyników naszego SELECT
+| Jeżeli tabela zawiera:
 |
-| Jeżeli tabela zawiera
+| id  | tresc
+| 1   | Nauczyć się PHP
+| 2   | Zrobić zadanie
+| 3   | Kupić kabel
 |
-| id  |  tresc
-|  1  | Nauczyć się PHP
-|  2  | Zrobić zadanie
-|  3  | Kupić kabel
-|      
-| pętla wykona się trzy razy
-| za każdym razem zmienna $zadanie
-| będzie zawierało jeden rekord.
+| pętla wykona się trzy razy.
+| Za każdym razem zmienna $zadanie będzie zawierała jeden rekord.
 |
 | Pierwszy obrót:
-| 
-| $zadanie("id")     -> 1
-| $zadanie("tresc")  -> Nauczyć się PHP
+|
+| $zadanie['id']     -> 1
+| $zadanie['tresc']  -> Nauczyć się PHP
 |
 | Drugi obrót:
-| 
-| $zadanie("id")     -> 2
-| $zadanie("tresc")  -> Zrobić zadanie
+|
+| $zadanie['id']     -> 2
+| $zadanie['tresc']  -> Zrobić zadanie
 |
 | itd.
+|
 */
 
 while ($zadanie = mysqli_fetch_assoc($wynik)) {
 
     /*
-    | echo jest poleceniem PHP
-    | które wyświetla coś na stronie
+    |--------------------------------------------------------------------------
+    | Wyświetlenie treści zadania
+    |--------------------------------------------------------------------------
     |
-    | ("tresc") oznacza:
-    | pobierz wartośc kolumny "tresc"
-    | z aktualnego rekordu
+    | echo jest poleceniem PHP, które wyświetla tekst
+    | lub kod HTML na stronie.
+    |
+    | $zadanie['tresc'] oznacza:
+    | pobierz wartość kolumny „tresc” z aktualnego rekordu.
+    |
     */
 
-    echo $zadanie("tresc");
+    echo $zadanie['tresc'];
 
     /*
-        teraz tworzymy link "Usun"
-        <a href="..."> jest znacznikiem HTML tworzącym odnośnik
-
-        Problem polega na tym ze czesc adresu
-        jest zwykłym tekstem
-        a cześć pochodzi ze zmiennej PHP
-
-        Operator:
-
-        . = oznacza w PHP łacznie tekstów
-
-        Przykład:
-
-        "JAN" . " Kowalski"
-
-        da:
-
-        JAN Kowalski
-
-        dlatego poniżej łaczymy:
-
-        "index.php?usun="
-
-        z:
-
-        $zadanie("id")
-
-        Jeżeli id wynosi 3 powstaje
-
-        index.php?usun=3
+    |--------------------------------------------------------------------------
+    | Link umożliwiający usunięcie zadania
+    |--------------------------------------------------------------------------
+    |
+    | Znacznik <a href="..."> tworzy odnośnik.
+    |
+    | Część adresu jest zwykłym tekstem, a część pochodzi
+    | ze zmiennej PHP.
+    |
+    | Operator kropki (.) służy w PHP do łączenia tekstów.
+    |
+    | Przykład:
+    |
+    | "Jan" . " Kowalski"
+    |
+    | daje:
+    |
+    | Jan Kowalski
+    |
+    | Dlatego poniżej łączymy:
+    |
+    | "index.php?usun="
+    |
+    | z:
+    |
+    | $zadanie['id']
+    |
+    | Jeżeli identyfikator zadania wynosi 3, powstanie adres:
+    |
+    | index.php?usun=3
+    |
     */
 
-    echo " <a href='index.php?usun=" . $zadanie("id") . "'Usuń</a>";
+    echo " <a href=\"index.php?usun=" . $zadanie['id'] . "\">Usuń</a>";
 
     /*
-        <br> jest znacznikiem HTML
-        oznaczającym przejście do nowej linii
-
-        PHP za pomocą echo może również
-        wysyłać do przeglądarki kod HTML
+    |--------------------------------------------------------------------------
+    | Przejście do nowej linii
+    |--------------------------------------------------------------------------
+    |
+    | Znacznik <br> oznacza przejście do nowej linii.
+    |
+    | PHP za pomocą echo może również wysyłać do przeglądarki
+    | kod HTML.
+    |
     */
 
     echo "<br>";
-
 }
 
+
 /*
- 10. zamkniecie połaczenia
-
- mysqli_close() zamyka wcześniej utworzone
- połaczenie z bazą danych
-
- do funkcji przekazujemy zmienna $polaczenie
- ponieważ właśnie to połączenie chcemy zamknąć
+|--------------------------------------------------------------------------
+| 10. Zamknięcie połączenia
+|--------------------------------------------------------------------------
+|
+| Funkcja mysqli_close() zamyka wcześniej utworzone
+| połączenie z bazą danych.
+|
+| Do funkcji przekazujemy zmienną $polaczenie,
+| ponieważ właśnie to połączenie chcemy zamknąć.
+|
 */
 
 mysqli_close($polaczenie);
@@ -619,144 +627,264 @@ mysqli_close($polaczenie);
 </html>
 
 <!--
-    Dodatkowe informacje:
-    Podstawoewe znaki i zapisy w PHP
-    ================
+|--------------------------------------------------------------------------
+| Dodatkowe informacje
+|--------------------------------------------------------------------------
+|
+| Podstawowe znaki i zapisy w PHP
+|
 
-    $
-    to poacżatek nazwy zmiennej w PHP
-    Przykład
-    $imie = "Adam";
+|--------------------------------------------------------------------------
+| Zmienna $
+|--------------------------------------------------------------------------
+|
+| Znak $ oznacza początek nazwy zmiennej w PHP.
+|
+| Przykład:
+|
+| $imie = "Adam";
+|
 
-    =
-    operator przypisania 
-    przypisuje wartość znajdującą się po prawej stronie do zmiennej po lewej stronie
-    Przykład:
-    $wiek = 10;
+|--------------------------------------------------------------------------
+| Operator przypisania =
+|--------------------------------------------------------------------------
+|
+| Operator przypisania przypisuje wartość znajdującą się
+| po prawej stronie do zmiennej po lewej stronie.
+|
+| Przykład:
+|
+| $wiek = 10;
+|
 
-    ==
-    Operator porównania
-    SPrawdza czy dwie wartości są równe
-    Przykład
-    $wiek == 10
+|--------------------------------------------------------------------------
+| Operator porównania ==
+|--------------------------------------------------------------------------
+|
+| Sprawdza, czy dwie wartości są równe.
+|
+| Przykład:
+|
+| $wiek == 10;
+|
 
-    !
-    Oznacza negację, czyli "NIE"
-    Przykład:
-    !$polaczenie
-    Możemy to przeczytac jako "nie ma połaczenia"
+|--------------------------------------------------------------------------
+| Operator negacji !
+|--------------------------------------------------------------------------
+|
+| Oznacza negację, czyli „nie”.
+|
+| Przykład:
+|
+| !$polaczenie;
+|
+| Możemy to przeczytać jako:
+| „nie ma połączenia”.
+|
 
-    ;
-    Średnik oznacza koniec instrukcji PHP
-    Przykład
-    $imie = "ADAM";
+|--------------------------------------------------------------------------
+| Średnik ;
+|--------------------------------------------------------------------------
+|
+| Średnik oznacza koniec instrukcji PHP.
+|
+| Przykład:
+|
+| $imie = "Adam";
+|
 
-    ( )
-    Nawiasy okrągłe
-    są używane między innymi przy funkcjach i warunkach 
-    Przykład funkcji"
-    mysqli_connect(...)
+|--------------------------------------------------------------------------
+| Nawiasy okrągłe ()
+|--------------------------------------------------------------------------
+|
+| Są używane między innymi przy funkcjach i warunkach.
+|
+| Przykład funkcji:
+|
+| mysqli_connect(...);
+|
+| Przykład warunku:
+|
+| if ($wiek == 10) {
+|     echo "Masz 10 lat";
+| }
+|
 
-    Przykład warunku:
-    if ($wiek == 10) {
-    ....
-    }
-    
-    { }
-    Nawiasy klamrowe 
-    Oznaczają początek i koniec bloku instrukcji
-    Przykład:
-    if ($wiek == 10) {
-        echo "Masz 10 lat"
-    }
+|--------------------------------------------------------------------------
+| Nawiasy klamrowe {}
+|--------------------------------------------------------------------------
+|
+| Oznaczają początek i koniec bloku instrukcji.
+|
+| Przykład:
+|
+| if ($wiek == 10) {
+|     echo "Masz 10 lat";
+| }
+|
 
-    [ ]
-    Nawiasy kwadratowe 
-    Pozwalają dostać się do konkretnego elementu tablicy lub innej struktury danych
-    Pzykład:
-    $_POST["tresc"]
+|--------------------------------------------------------------------------
+| Nawiasy kwadratowe []
+|--------------------------------------------------------------------------
+|
+| Pozwalają dostać się do konkretnego elementu tablicy
+| lub innej struktury danych.
+|
+| Przykład:
+|
+| $_POST['tresc'];
+|
+| Oznacza:
+| pobierz element o nazwie „tresc” z danych przesłanych
+| metodą POST.
+|
 
-    Oznacza:
-    pobierz element o nazwie "tresc" z danych przesłanych metodą POST.
+|--------------------------------------------------------------------------
+| Cudzysłowy ""
+|--------------------------------------------------------------------------
+|
+| Cudzysłowy służą do oznaczania tekstu.
+|
+| Przykład:
+|
+| $imie = "Adam";
+|
 
-    " "
-    cudzysłów oznaczją tekst
-    Przykład:
-    $imie = "Adam"
+|--------------------------------------------------------------------------
+| Apostrofy ''
+|--------------------------------------------------------------------------
+|
+| Apostrofy również mogą oznaczać tekst.
+|
+| Przykład:
+|
+| $imie = 'Adam';
+|
 
-    ' '
-    Apostrofy również mogą oznaczać tekst
-    Przykład:
-    $imie = 'Adam'
+|--------------------------------------------------------------------------
+| Operator łączenia tekstów .
+|--------------------------------------------------------------------------
+|
+| Kropka w PHP służy do łączenia tekstów.
+|
+| Przykład:
+|
+| $imie = "Adam";
+| echo "Witaj " . $imie;
+|
+| Wynik:
+|
+| Witaj Adam
+|
 
-    .
-    Kropka w PHP służy do łaczenia tekstów
-    Przykład:
-    $imie = "Adam";
-    echo "witaj . "$imie"
+|--------------------------------------------------------------------------
+| Przecinek ,
+|--------------------------------------------------------------------------
+|
+| Przecinek służy między innymi do oddzielania argumentów
+| przekazywanych do funkcji.
+|
+| Przykład:
+|
+| mysqli_connect($host, $uzytkownik, $haslo, $baza);
+|
 
-    Wynik
-    Wiaj Adam
+|--------------------------------------------------------------------------
+| Gwiazdka *
+|--------------------------------------------------------------------------
+|
+| Gwiazdka może mieć różne znaczenia.
+|
+| W zapytaniu:
+|
+| SELECT * FROM zadania;
+|
+| oznacza:
+| pobierz wszystkie kolumny z tabeli „zadania”.
+|
 
-    ,
-    Przecinek służy między innymi do oddzielenia argumentów przekazywanych do funkcji
-    Przykład:
-    mysqli_connect($host, $uzytkownik, $haslo, $baza);
+|--------------------------------------------------------------------------
+| Znacznik otwierający PHP
+|--------------------------------------------------------------------------
+|
+| Znacznik <?php /* rozpoczyna kod PHP.
+|
+| Wszystko po tym znaczniku jest traktowane jako kod PHP
+| aż do zakończenia kodu znacznikiem */ ?>.
+|
 
-    *
-    Gwiazdka może mieć rózne znaczenia
+|--------------------------------------------------------------------------
+| Znacznik zamykający PHP
+|--------------------------------------------------------------------------
+|
+| Znacznik ?> kończy kod PHP.
+|
+| Po nim możemy ponownie pisać zwykły kod HTML.
+|
 
-    W zapytaniu:
-    SELECT * FROM zadania
+|--------------------------------------------------------------------------
+| Zmienna $_POST
+|--------------------------------------------------------------------------
+|
+| Jest to specjalna zmienna PHP zawierająca dane przesłane
+| przez formularz metodą POST.
+|
+| Jeżeli w HTML mamy:
+|
+| <input type="text" name="tresc">
+|
+| to w PHP możemy odczytać wpisaną wartość za pomocą:
+|
+| $_POST['tresc'];
+|
 
-    oznacza:
-    pobierz wszystkie kolumny z tabeli "zadania"
+|--------------------------------------------------------------------------
+| Zmienna $_GET
+|--------------------------------------------------------------------------
+|
+| Jest to specjalna zmienna PHP zawierająca dane przekazane
+| w adresie strony.
+|
+| Przykład:
+|
+| index.php?usun=5
+|
+| W PHP możemy odczytać liczbę 5 za pomocą:
+|
+| $_GET['usun'];
+|
 
-    <?php
-    /*znacznik rozpoczyna kod PHP
+|--------------------------------------------------------------------------
+| Komentarz jednoliniowy //
+|--------------------------------------------------------------------------
+|
+| Znaki // rozpoczynają komentarz jednoliniowy.
+|
+| Komentarz nie jest wykonywany przez PHP.
+| Służy do umieszczania opisów i wyjaśnień w kodzie.
+|
+| Przykład:
+|
+| // To jest komentarz.
+| $wiek = 10;
+|
 
-    wszystko po tym znaczniku jest traktowane jako kod PHP aż do zakończenia kodu znacznikiem ?>. */
+|--------------------------------------------------------------------------
+| Komentarz wieloliniowy /* ... */
+|--------------------------------------------------------------------------
+|
+| Wszystko pomiędzy znakami otwierającymi i zamykającymi komentarz
+| jest komentarzem i nie zostaje wykonane przez PHP.
+|
 
-    ?>
-    znacznik kończący kod PHP
-
-    po nim możemy ponownie pisac zwykły kod HTML,
-
-    $_POST
-    specjalna zmienna PHP zawierająca dane przesłane przez formularz metodą POST
-
-    Jezeli w HTML mamy:
-    <input type="text" name"tresc">
-
-    to w PHP możemy odczytać wpisaną wartość a pomocą:
-    $_POST("tresc")
-
-    $_GET
-    specjalna zmienna PHP zawierająca dane przekazane w adresie strony
-
-    Prszykład:
-    index.php?usun=5
-
-    W PHP możemy odczytać liczbę 5 za pomocą:
-    $_GET("usun")
-
-    //
-    początek komentarza jednoliniowego 
-    komemtarz nie jest wykonywane w PHP
-    słyży do umieszczania opisów i wyjaśnień w kodzie
-
-    Przykłąd :
-    // to jest komentarz
-    $wiek = 10;
-
-    /* ...... */
-    komenarz wieloliniowy
-
-     wszystko pomiedzy /* oraz */ jest komenatrze i nie zostaje wykonywane przez PHP
-
-    echo
-    polecenie słurzace do wysiwetlenia informacji na stronie
-
-    przykład
-
+|--------------------------------------------------------------------------
+| Polecenie echo
+|--------------------------------------------------------------------------
+|
+| Polecenie echo służy do wyświetlania informacji na stronie.
+|
+| Przykład:
+|
+| echo "Witaj!";
+|
 -->
