@@ -274,3 +274,31 @@ if (isset($_GET['usun'])) {
     $wynik = mysqli_query($polaczenie, $sql);
 
 }
+
+/*
+|--------------------------------------------------------------------------
+| 6. Pobranie wszystkich zadań
+|--------------------------------------------------------------------------
+|
+| SELECT oznacza:
+| "pobierz dane",
+|
+| Znak: *
+| Oznacza "wszystkie kolumny"
+|
+| FROM oznacza: "z tabeli",
+| Czyli:
+| SELECT * FROM zadania
+|
+| czytamy: "pobierz wszystkie kolumny ze wszystkich rekordów tabeli zadania"
+*/
+
+$sql = "SELECT * FROM zadania";
+
+/*
+| Wysyłamy zapytanie do MySQL
+| Tym razem wynik jest name potrzebny
+| dlatego zapisujemy go w zmiennej $wynik
+*/
+
+$wynik = mysqli_query($polaczenie, $sql);
