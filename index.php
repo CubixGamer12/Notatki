@@ -160,5 +160,4 @@ if (!$polaczenie) {
 //
 // $x = 5;
 //
-//
- 
+// oznacza: "wstaw 5 do zmiennej x"
