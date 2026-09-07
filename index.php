@@ -702,6 +702,61 @@ mysqli_close($polaczenie);
     Przecinek służy między innymi do oddzielenia argumentów przekazywanych do funkcji
     Przykład:
     mysqli_connect($host, $uzytkownik, $haslo, $baza);
-    
+
+    *
+    Gwiazdka może mieć rózne znaczenia
+
+    W zapytaniu:
+    SELECT * FROM zadania
+
+    oznacza:
+    pobierz wszystkie kolumny z tabeli "zadania"
+
+    <?php
+    /*znacznik rozpoczyna kod PHP
+
+    wszystko po tym znaczniku jest traktowane jako kod PHP aż do zakończenia kodu znacznikiem ?>. */
+
+    ?>
+    znacznik kończący kod PHP
+
+    po nim możemy ponownie pisac zwykły kod HTML,
+
+    $_POST
+    specjalna zmienna PHP zawierająca dane przesłane przez formularz metodą POST
+
+    Jezeli w HTML mamy:
+    <input type="text" name"tresc">
+
+    to w PHP możemy odczytać wpisaną wartość a pomocą:
+    $_POST("tresc")
+
+    $_GET
+    specjalna zmienna PHP zawierająca dane przekazane w adresie strony
+
+    Prszykład:
+    index.php?usun=5
+
+    W PHP możemy odczytać liczbę 5 za pomocą:
+    $_GET("usun")
+
+    //
+    początek komentarza jednoliniowego 
+    komemtarz nie jest wykonywane w PHP
+    słyży do umieszczania opisów i wyjaśnień w kodzie
+
+    Przykłąd :
+    // to jest komentarz
+    $wiek = 10;
+
+    /* ...... */
+    komenarz wieloliniowy
+
+     wszystko pomiedzy /* oraz */ jest komenatrze i nie zostaje wykonywane przez PHP
+
+    echo
+    polecenie słurzace do wysiwetlenia informacji na stronie
+
+    przykład
 
 -->
