@@ -375,3 +375,7 @@ $wynik = mysqli_query($polaczenie, $sql);
     -->
 
     <input type="text" name="tresc">
+
+    <!--
+    
+    -->
