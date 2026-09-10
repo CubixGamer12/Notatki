@@ -1,0 +1,71 @@
+
+ZADANIE 1 – WYŚWIETLANIE TEKSTU
+Napisz program, który za pomocą polecenia echo wyświetli tekst:
+Witaj na lekcji PHP!
+
+
+ZADANIE 2 – ZMIENNA
+Utwórz zmienną $imie i przypisz do niej swoje imię.
+Następnie wyświetl wartość zmiennej za pomocą echo.
+
+ZADANIE 3 – DWIE ZMIENNE
+Utwórz dwie zmienne:
+$imie
+$wiek
+Przypisz do nich swoje imię oraz wiek.
+Następnie wyświetl obie wartości za pomocą echo.
+
+ZADANIE 4 – ŁĄCZENIE TEKSTU
+Utwórz zmienną:
+$imie = “Adam”;
+Za pomocą echo oraz operatora . wyświetl:
+Witaj Adam
+
+ZADANIE 5 – DODAWANIE
+Utwórz dwie zmienne:
+$a = 5;
+$b = 3;
+Oblicz ich sumę i zapisz wynik w zmiennej $wynik.
+Wyświetl wartość zmiennej $wynik za pomocą echo.
+
+ZADANIE 6 – OBLICZANIE WIEKU
+Utwórz zmienne:
+$rokUrodzenia = 2008;
+$rok = 2026;
+Oblicz wiek:
+$wiek = $rok - $rokUrodzenia;
+Wyświetl obliczony wiek za pomocą echo.
+
+ZADANIE 7 – PORÓWNANIE LICZBY
+Utwórz zmienną:
+$liczba = 10;
+Za pomocą instrukcji if oraz operatora == sprawdź, czy zmienna $liczba jest równa 10.
+Jeżeli tak, wyświetl:
+Liczba wynosi 10
+
+ZADANIE 8 – SPRAWDZENIE WIEKU
+Utwórz zmienną:
+$wiek = 18;
+Za pomocą instrukcji if oraz operatora == sprawdź, czy wiek wynosi 18.
+Jeżeli tak, wyświetl:
+Masz 18 lat
+
+ZADANIE 9 – IMIĘ I WYNIK DZIAŁANIA
+Utwórz zmienne:
+$imie = “Adam”;
+$a = 4;
+$b = 6;
+Oblicz sumę zmiennych $a i $b.
+Zapisz wynik w zmiennej $wynik.
+Za pomocą echo oraz operatora . wyświetl:
+Adam, wynik to 10
+
+ZADANIE 10 – PROSTE OBLICZENIE CENY
+Utwórz zmienne:
+$produkt = “Klawiatura”;
+$cena = 100;
+$ilosc = 2;
+Oblicz łączną cenę:
+$cenaRazem = $cena * $ilosc;
+Za pomocą echo oraz operatora . wyświetl:
+Klawiatura kosztuje razem 200 zł
