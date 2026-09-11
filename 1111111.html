@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liczenie</title>
+    <style>
+        div { text-align: center; color: white; margin: 10px auto; font-size: 30px;}
+        button {margin: 5px auto; display: block;}
+        body {background-color: rgb(5, 151, 103);}
+    </style>
+</head>
+<body>
+    <div id="wynik">Wylosowana Liczba: </div>
+    <button onclick="liczba()">Losuj</button>
+    <script>
+        function liczba() {
+            Math.round()
+            let wylosowana_liczba = Math.round((Math.random()*100))
+            document.getElementById("wynik").innerHTML = "Wylosowana Liczba: " + wylosowana_liczba
+        }
+    </script>
+</body>
+</html>
