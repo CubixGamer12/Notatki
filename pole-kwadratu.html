@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liczenie</title>
+    <style>
+        h1 {text-align: center; color: white; font-family: monospace; font-size: 50px;}
+        div { text-align: center; color: white; margin: 10px auto; font-size: 30px;}
+        button {margin: 5px auto; display: block;}
+        input {margin: 5px auto; display: block; text-align: center;}
+        body {background-color: rgb(5, 151, 103);}
+    </style>
+</head>
+<body>
+    <div id="wynik">Pole Prostokątu Wynosi: </div>
+    <input type="number" id="a" placeholder="Liczba A">
+    <input type="number" id="b" placeholder="Liczba B">
+    <button onclick="liczba()">Policz</button>
+    <script>
+        function liczba() {
+            let liczbaA = document.getElementById("a").value; 
+            let liczbaB = document.getElementById("b").value;
+
+            let wynikkwadwat = liczbaA * liczbaB
+
+            document.getElementById("wynik").innerHTML = "Pole Prostokątu Wynosi: " + wynikkwadwat
+            
+        }
+    </script>
+</body>
+</html>
