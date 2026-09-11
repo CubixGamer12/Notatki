@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>liczenie</title>
+</head>
+<body>
+    <input type="number" id="liczenie" placeholder="Wpisz Swoje Imie">
+    <button onclick="pokaz()">Wprowadź dane</button>
+    <p id="wynik"></p>
+    
+    <script>
+        function pokaz() {
+            let liczba = "tomek";
+            liczba = document.getElementById("liczenie").value;
+            if(liczba%2==1) {
+                console.log("liczba nieparzysta")
+            } else {
+                console.log("liczba parzysta")
+            }
+
+        }
+    </script>
+</body>
+</html>
